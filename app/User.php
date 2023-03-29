@@ -49,9 +49,9 @@ class User
                 $this->firstName ." ". $this->lastName
             );
         }
-        // return ucwords(
-        //     $this->salutation ." ". $this->firstName ." ". $this->lastName
-        // );
+        return ucwords(
+            $this->salutation ." ". $this->firstName ." ". $this->lastName
+        );
     }
 
     /**
@@ -70,7 +70,14 @@ class User
         return $this->profilePhoto;
     }
 
-   
+    /**
+     * Get Role
+     */
+    public function getRole(): string
+    {
+        return $this->role;
+    }
+
     /**
      * Save function
      */
@@ -81,12 +88,19 @@ class User
 
         // Validate e-mail
         if (filter_var($email, FILTER_VALIDATE_EMAIL) == false) {
+            echo "\r\nFailed saving with invalid Email: $email";
             return false;
         }
 
         // Validate photo
         $photoExtension = pathinfo($this->getProfilePhoto(), PATHINFO_EXTENSION);
-        
+        if ($photoExtension != "jpg") {
+            echo (
+                "\r\nFailed saving with invalid Photo: 
+                $this->getProfilePhoto()"
+            );
+            return false;
+        }
 
         echo "\r\nUser saved successfully.";
         return true;
