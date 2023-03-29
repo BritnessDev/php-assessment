@@ -59,7 +59,49 @@ class Message
     /**
      * Send Text Message
      */
-  
+    public function sendTextMessage(): bool 
+    {
+        if (($this->sender->getRole() == Role::$TEACHER ) 
+            && ($this->messageType == MessageType::$SYSTEM)
+        ) {
+            if ($this->receiver->getRole() != Role::$STUDENT) {
+                echo "\r\nSend failed! System message not allowed for
+                 this User type!";
+                return false;
+            }
+        }
+
+        if (($this->sender->getRole() == Role::$STUDENT 
+            || $this->sender->getRole() == Role::$PARENT) 
+            && ($this->receiver->getRole() == Role::$PARENT 
+            || $this->sender->getRole() == Role::$STUDENT)
+        ) {
+            echo (
+            "\r\nSend failed! These users are not allowed 
+            to message each other."
+            );
+            return false;
+        }
+
+        echo "\r\nMessage sent successfully!";
+        return true;
+    }
+
+    /**
+     * Save Message
+     */
+    public function save(): bool
+    {
+        if (($this->sender->getRole() != Role::$TEACHER ) 
+            && ($this->messageType == MessageType::$SYSTEM)
+        ) {
+            echo "\r\nSave message failed! Action not allowed.";
+            return false;
+        }
+
+        echo "\r\nSaved message successfully.";
+        return true;
+    }
 
 }
 
